@@ -1,0 +1,20 @@
+{
+    "name": "3D-Solar-System-Visualization",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "dependencies": {
+      "dat.gui": "^0.7.9",
+      "three": "^0.157.0"
+    },
+    "devDependencies": {
+      "vite": "^4.4.11"
+    },
+    "scripts": {
+      "dev": "vite",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+  }
+  
