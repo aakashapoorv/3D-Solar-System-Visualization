@@ -19,6 +19,7 @@ function init() {
 
     createCelestialBodies();
 
+    window.addEventListener('resize', onWindowResize, false);
 }
 
 function createCelestialBodies() {
@@ -41,6 +42,12 @@ function createCelestialBodies() {
     );
     moon.position.set(18, 0, 0);
     scene.add(moon);
+}
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
