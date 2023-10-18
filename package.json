@@ -1,8 +1,8 @@
 {
-    "name": "3D-Solar-System-Visualization",
+    "name": "3d-solar-system-visualization",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "main.js",
     "dependencies": {
       "dat.gui": "^0.7.9",
       "three": "^0.157.0"
