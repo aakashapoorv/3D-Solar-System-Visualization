@@ -71,6 +71,19 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
 
+    earth.rotation.y += -0.01;
+    const earthOrbitSpeed = -0.01;
+    earth.position.x = 15 * Math.cos(clock.getElapsedTime() * earthOrbitSpeed);
+    earth.position.z = 15 * Math.sin(clock.getElapsedTime() * earthOrbitSpeed);
+
+    moon.rotation.y += -0.02;
+    const moonOrbitSpeed = -0.03;
+    const moonOrbitRadius = 3;
+    moon.position.x = earth.position.x + moonOrbitRadius * Math.cos(clock.getElapsedTime() * moonOrbitSpeed);
+    moon.position.z = earth.position.z + moonOrbitRadius * Math.sin(clock.getElapsedTime() * moonOrbitSpeed);
+
+    sun.rotation.y += 0.001;
+
     controls.update();
     renderer.render(scene, camera);
 }
