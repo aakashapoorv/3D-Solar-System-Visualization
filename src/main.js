@@ -18,6 +18,7 @@ function init() {
     camera.lookAt(0, 0, 0);
 
     createCelestialBodies();
+    createOrbits();
 
     window.addEventListener('resize', onWindowResize, false);
 }
@@ -42,6 +43,23 @@ function createCelestialBodies() {
     );
     moon.position.set(18, 0, 0);
     scene.add(moon);
+}
+
+let earthOrbit;
+let moonOrbit;
+
+function createOrbits() {
+    // Create the Earth orbit using RingGeometry
+    const earthOrbitGeometry = new THREE.RingGeometry(14.95, 15, 100);
+    earthOrbit = new THREE.Mesh(earthOrbitGeometry, new THREE.MeshBasicMaterial({ color: 'cyan', side: THREE.DoubleSide }));
+    earthOrbit.rotation.x = Math.PI / 2;
+    scene.add(earthOrbit);
+
+    // Create the Moon orbit using RingGeometry
+    const moonOrbitGeometry = new THREE.RingGeometry(2.95, 3, 100);
+    moonOrbit = new THREE.Mesh(moonOrbitGeometry, new THREE.MeshBasicMaterial({ color: 'cyan', side: THREE.DoubleSide }));
+    moonOrbit.rotation.x = Math.PI / 2;
+    earth.add(moonOrbit);  // Add the moon orbit as a child of the earth
 }
 
 function onWindowResize() {
