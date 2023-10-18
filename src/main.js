@@ -1,8 +1,41 @@
 import * as THREE from 'three';
+import * as dat from 'dat.gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 let scene, camera, renderer, controls, clock;
 let sun, earth, moon;
+let earthOrbit, moonOrbit;
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+let rotateEarth = true;
+let rotateMoon = true;
+let rotateSun = true;
+
+let guiControls = {
+    rotateSun: true,
+    rotateEarth: true,
+    rotateMoon: true,
+};
+
+let gui;
+
+function initGUI() {
+    gui = new dat.GUI();
+    
+    gui.add(guiControls, 'rotateSun').name('Rotate Sun').onChange((value) => {
+        rotateSun = value;
+    });
+    
+    gui.add(guiControls, 'rotateEarth').name('Rotate Earth').onChange((value) => {
+        rotateEarth = value;
+    });
+
+    gui.add(guiControls, 'rotateMoon').name('Rotate Moon').onChange((value) => {
+        rotateMoon = value;
+    });
+}
 
 function init() {
     scene = new THREE.Scene();
@@ -19,6 +52,7 @@ function init() {
 
     createCelestialBodies();
     createOrbits();
+    initGUI();
 
     window.addEventListener('resize', onWindowResize, false);
 }
@@ -45,9 +79,6 @@ function createCelestialBodies() {
     scene.add(moon);
 }
 
-let earthOrbit;
-let moonOrbit;
-
 function createOrbits() {
     // Create the Earth orbit using RingGeometry
     const earthOrbitGeometry = new THREE.RingGeometry(14.95, 15, 100);
@@ -71,22 +102,52 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
 
-    earth.rotation.y += -0.01;
-    const earthOrbitSpeed = -0.01;
-    earth.position.x = 15 * Math.cos(clock.getElapsedTime() * earthOrbitSpeed);
-    earth.position.z = 15 * Math.sin(clock.getElapsedTime() * earthOrbitSpeed);
+    if (rotateEarth) {
+        earth.rotation.y += -0.01;
+        const earthOrbitSpeed = -0.01;
+        earth.position.x = 15 * Math.cos(clock.getElapsedTime() * earthOrbitSpeed);
+        earth.position.z = 15 * Math.sin(clock.getElapsedTime() * earthOrbitSpeed);
+    }
 
-    moon.rotation.y += -0.02;
-    const moonOrbitSpeed = -0.03;
-    const moonOrbitRadius = 3;
-    moon.position.x = earth.position.x + moonOrbitRadius * Math.cos(clock.getElapsedTime() * moonOrbitSpeed);
-    moon.position.z = earth.position.z + moonOrbitRadius * Math.sin(clock.getElapsedTime() * moonOrbitSpeed);
+    if (rotateMoon) {
+        moon.rotation.y += -0.02;
+        const moonOrbitSpeed = -0.03;
+        const moonOrbitRadius = 3;
+        moon.position.x = earth.position.x + moonOrbitRadius * Math.cos(clock.getElapsedTime() * moonOrbitSpeed);
+        moon.position.z = earth.position.z + moonOrbitRadius * Math.sin(clock.getElapsedTime() * moonOrbitSpeed);
+    }
 
-    sun.rotation.y += 0.001;
+    if (rotateSun) {
+        sun.rotation.y += 0.001;
+    }
 
     controls.update();
     renderer.render(scene, camera);
 }
 
+window.addEventListener('click', onDocumentMouseDown, false);
+
+function onDocumentMouseDown(event) {
+    event.preventDefault();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects([earth, moon, sun]);
+    if (intersects.length > 0) {
+        const clickedObject = intersects[0].object;
+
+        if (clickedObject === earth) {
+            rotateEarth = !rotateEarth;
+        } else if (clickedObject === moon) {
+            rotateMoon = !rotateMoon;
+        } else if (clickedObject === sun) {
+            rotateSun = !rotateSun;
+        }
+    }
+}
+
 init();
 animate();
+
