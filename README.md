@@ -31,6 +31,12 @@
 ```
 Visualize a 3D model of the sun, earth, and moon with interactive controls to manipulate their rotations. Experience an immersive space environment with a surrounding galaxy skybox.
 
+## Demo
+
+
+https://github.com/aakashapoorv/3D-Solar-System-Visualization/assets/5700430/00602c84-ff2c-46f2-9e8b-11fc8c464fad
+
+
 ## Features
 
 - **Interactive 3D Model**: View the sun, earth, and moon in a three-dimensional space.
